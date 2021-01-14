@@ -6,8 +6,8 @@ async function setupPlugin({ config, global }) {
 }
 
 async function processEvent(event, { global }) {
-  if (event.properties['$ip']) {
-      fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.properties['$ip'], {
+  if (event.ip) {
+      fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.ip, {
           headers: {
             Authorization: global.clearbitAuth
           }
