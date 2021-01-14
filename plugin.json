@@ -1,14 +1,14 @@
 {
-  "name": "helloworldplugin",
-  "url": "https://github.com/PostHog/helloworldplugin",
-  "description": "Greet the World and Foo a Bar, JS edition!",
+  "name": "Clearbit Reveal Plugin",
+  "url": "https://github.com/enterpriseoss/cearbit-plugin",
+  "description": "Enrich events with Clearbit data based on event IP address",
   "main": "index.js",
   "config": {
-    "bar": {
-      "name": "What's in the bar?",
+    "clearbitKey": {
+      "name": "Enter your Clearbit API key with Reveal API access",
       "type": "string",
-      "default": "baz",
-      "required": false
+      "default": "",
+      "required": true
     }
   }
 }

@@ -1,18 +1,17 @@
+import { Client } from 'clearbit';
+
 async function setupPlugin({ config, global }) {
-    console.log("Setting up the plugin!")
-    console.log(config)
+    global.clearbitKey = config.clearbitKey;
     global.setupDone = true
 }
 
-async function processEvent(event, { config, cache }) {
-    const counter = await cache.get('counter', 0)
-    cache.set('counter', counter + 1)
+async function processEvent(event, { config }) {
+    const Reveal = new Client({key: global.clearbitKey}).Reveal;
 
     if (event.properties) {
-        event.properties['hello'] = 'world'
-        event.properties['bar'] = config.bar
-        event.properties['$counter'] = counter
-        event.properties['lib_number'] = libFunction(3)
+        Reveal.find(event.properties['$ip']).then(function (company) {
+            console.log(company);
+        })
     }
 
     return event
@@ -21,10 +20,4 @@ async function processEvent(event, { config, cache }) {
 module.exports = {
     setupPlugin,
     processEvent,
-}
-
-// Internal library functions below
-
-function libFunction (number) {
-    return number * 2;
 }

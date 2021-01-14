@@ -14,7 +14,7 @@ Posthog hello world plugin. Use it as a base for your own plugins!
 ```json
 {
     "name": "helloworldplugin",
-    "url": "https://github.com/PostHog/helloworldplugin",
+    "url": "https://github.com/enterpriseoss/clearbit-plugin",
     "global": {
         "enabled": true,
         "config": {
