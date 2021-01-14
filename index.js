@@ -1,20 +1,16 @@
-var clearbit = require('clearbit');
-
 async function setupPlugin({ config, global }) {
     global.clearbitKey = config.clearbitKey;
     global.setupDone = true
 }
 
 async function processEvent(event, { config }) {
-    const Reveal = new clearbit.Client({key: global.clearbitKey}).Reveal;
-
     if (event.properties['$ip']) {
-        Reveal.find(event.properties['$ip']).then(function (company) {
-            console.log(company);
-            event.properties['cb-raw'] = company;
-
-            return event
+        const response = await fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.properties['$ip'], {
+            headers: {
+                Authorization: "Basic c2tfNTMyZWNjY2U0Yjg0MjlkYzBjYTFlNDVhYmE5NDkzYjg6"
+            }
         })
+        console.log(response)
     }
 
     return event
