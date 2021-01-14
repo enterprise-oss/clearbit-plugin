@@ -10,7 +10,11 @@ async function processEvent(event, { config }) {
                 Authorization: "Basic " + config.apiKey
             }
         })
+        event.properties['companyName'] = response.company.name;
+        event.properties['companyDomain'] = response.company.domain;
+
         console.log(response)
+        return event
     }
 
     return event
