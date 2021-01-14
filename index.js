@@ -1,4 +1,4 @@
-import * as clearbit from 'clearbit';
+var clearbit = require('clearbit');
 
 async function setupPlugin({ config, global }) {
     global.clearbitKey = config.clearbitKey;
