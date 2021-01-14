@@ -1,4 +1,4 @@
-var Client = require('clearbit').Client;
+import * as clearbit from 'clearbit';
 
 async function setupPlugin({ config, global }) {
     global.clearbitKey = config.clearbitKey;
@@ -6,7 +6,7 @@ async function setupPlugin({ config, global }) {
 }
 
 async function processEvent(event, { config }) {
-    const Reveal = new Client({key: global.clearbitKey}).Reveal;
+    const Reveal = new clearbit.Client({key: global.clearbitKey}).Reveal;
 
     if (event.properties['$ip']) {
         Reveal.find(event.properties['$ip']).then(function (company) {
