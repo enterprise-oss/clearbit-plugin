@@ -1,23 +1,27 @@
 async function setupPlugin({ config, global }) {
-    global.clearbitKey = config.clearbitKey;
+    const authHeader = "Basic " + btoa(config.clearbitKey + ":" + '');
+    global.clearbitAuth = authHeader;
     global.setupDone = true
 }
 
-async function processEvent(event, { config }) {
-    if (event.properties['$ip']) {
-        const response = await fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.properties['$ip'], {
-            headers: {
-                Authorization: "Basic " + config.apiKey
-            }
-        })
+async function processEvent(event, { global }) {
+  if (event.properties['$ip']) {
+      const response = await fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.properties['$ip'], {
+          headers: {
+            Authorization: global.clearbitAuth
+          }
+      })
+      .then((resp) => resp.json())
+      .then((data) => {
         event.properties['companyName'] = response.company.name;
         event.properties['companyDomain'] = response.company.domain;
-
-        console.log(response)
+      
+        console.log(data)
         return event
-    }
-
-    return event
+      })
+  } else {
+      return event
+  }
 }
 
 module.exports = {
