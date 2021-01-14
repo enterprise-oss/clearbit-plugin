@@ -1,5 +1,6 @@
 async function setupPlugin({ config, global }) {
-    const authHeader = "Basic " + btoa(config.clearbitKey + ":" + '');
+    const base64 = Buffer.from(config.clearbitKey + ":" + '').toString('base64');
+    const authHeader = "Basic " + base64;
     global.clearbitAuth = authHeader;
     global.setupDone = true
 }
