@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "description": "Enrich Posthog events with Clearbit data based on event IP address",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "test": "jest"
     },
