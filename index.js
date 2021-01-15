@@ -8,6 +8,7 @@ async function setupPlugin({ config, global }) {
 async function processEvent(event, { global, cache }) {
   if (event.ip) {
       let response = await cache.get(event.ip);
+      let data = JSON.parse(response);
 
       if (!response) {
         response = await fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.ip, {
@@ -16,10 +17,11 @@ async function processEvent(event, { global, cache }) {
           }
         })
 
-        cache.set(event.ip, response)
+        data = await response.json();
+
+        cache.set(event.ip, JSON.stringify(data));
       }
 
-      const data = await response.json();
 
       event.properties['companyName'] = data.company.name;
       event.properties['companyDomain'] = data.company.domain;
