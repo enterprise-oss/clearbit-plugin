@@ -5,25 +5,31 @@ async function setupPlugin({ config, global }) {
     global.setupDone = true
 }
 
-async function processEvent(event, { global }) {
+async function processEvent(event, { global, cache }) {
   if (event.ip) {
-      return fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.ip, {
+      let response = await cache.get(event.ip);
+
+      if (!response) {
+        response = await fetch('https://reveal.clearbit.com/v1/companies/find?ip=' + event.ip, {
           headers: {
             Authorization: global.clearbitAuth
           }
-      })
-      .then((resp) => resp.json())
-      .then((data) => {
-        event.properties['companyName'] = data.company.name;
-        event.properties['companyDomain'] = data.company.domain;
-        return event
-      }).catch(() => {
-        return event;
-      })
-  } else {
+        })
+
+        cache.set(event.ip, response)
+      }
+
+      const data = await response.json();
+
+      event.properties['companyName'] = data.company.name;
+      event.properties['companyDomain'] = data.company.domain;
+
       return event
   }
+  
+  return event  
 }
+
 
 module.exports = {
     setupPlugin,
